@@ -54,7 +54,7 @@ export const useTaskManager = () => {
         completed: false,
       };
 
-      return [...prev, newTask];
+      return [newTask, ...prev];
     });
   }, []);
 

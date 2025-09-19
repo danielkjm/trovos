@@ -20,7 +20,7 @@ const renderTaskIndicator = (completed?: boolean) => {
     );
   }
 
-  return <span className="h-5 w-5 rounded-full border border-[#B4B4C8]" />;
+  return <span className="h-5 w-6 rounded-full border border-[#B4B4C8]" />;
 };
 
 export const TaskList: FC<TaskListProps> = ({
@@ -37,7 +37,7 @@ export const TaskList: FC<TaskListProps> = ({
           <button
             type="button"
             onClick={onGenerateTask}
-            className="mt-3 inline-flex items-center gap-2 rounded-[20px] bg-[#F2F2FA] px-3 py-2 text-[13px] font-medium text-[#4A4AEE]"
+            className="mt-3 inline-flex items-center gap-2 rounded-[20px] bg-[#F2F2FA] px-3 py-2 text-[13px] font-medium text-[#4A4AEE] cursor-pointer hover:bg-[#E3E3F5] focus:outline-none focus:ring-2 focus:ring-[#4A4AEE] focus:ring-offset-2"
           >
             <span className="flex h-4 w-4 items-center justify-center rounded-full bg-white text-[12px]">✶</span>
             AI generate tasks
@@ -71,12 +71,12 @@ export const TaskList: FC<TaskListProps> = ({
                   onToggleTask?.(task.id);
                 }
               }}
-              className={`group relative flex cursor-pointer items-start gap-4 rounded-[18px] border border-transparent px-4 py-3 transition-colors hover:border-[#E3E3F5] hover:bg-[#F7F7FC] ${
+              className={`group relative flex cursor-pointer items-start gap-4 rounded-[18px] w-full border border-transparent px-4 py-3 transition-colors hover:border-[#E3E3F5] hover:bg-[#F7F7FC] ${
                 task.completed ? 'opacity-60' : ''
               }`}
             >
               {renderTaskIndicator(task.completed)}
-              <div className="pr-10">
+              <div className="pr-10 w-60">
                 <p
                   className={`text-[15px] font-medium text-[#2F2F41] ${
                     task.completed ? 'line-through' : ''
