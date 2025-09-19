@@ -13,7 +13,7 @@ export const ChatView: FC = () => {
           <p className="text-[16px] text-[#6F6F7C]">Your personal care manager assistant</p>
         </div>
       </div>
-      <ChatInput />
+      <ChatInput variant="transparent" />
     </section>
   );
 };
