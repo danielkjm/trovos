@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
-import { Task, aiTaskSuggestions, initialTasks } from '@/data/patient';
+import { Task, TaskSuggestion, aiTaskSuggestions, initialTasks } from '@/data/patient';
 
 export const useTaskManager = () => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
@@ -24,6 +24,22 @@ export const useTaskManager = () => {
 
   const removeTask = useCallback((taskId: string) => {
     setTasks((prev) => prev.filter((task) => task.id !== taskId));
+  }, []);
+
+  const createTask = useCallback((payload: TaskSuggestion) => {
+    const label = payload.label.trim();
+    if (!label) {
+      return;
+    }
+    const dueLabel = payload.dueLabel.trim() || 'Today';
+    const newTask: Task = {
+      id: `task-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
+      label,
+      dueLabel,
+      completed: false,
+    };
+
+    setTasks((prev) => [newTask, ...prev]);
   }, []);
 
   const generateAiTask = useCallback(async () => {
@@ -62,6 +78,7 @@ export const useTaskManager = () => {
     tasks: sortedTasks,
     setTasks,
     generateAiTask,
+    createTask,
     toggleTask,
     removeTask,
   };

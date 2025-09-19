@@ -1,4 +1,6 @@
-import { FC } from 'react';
+'use client';
+
+import { FC, FormEvent, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { initialTasks, Task } from '@/data/patient';
 
@@ -7,6 +9,7 @@ type TaskListProps = {
   onGenerateTask?: () => void;
   onToggleTask?: (id: string) => void;
   onRemoveTask?: (id: string) => void;
+  onAddTask?: (payload: { label: string; dueLabel: string }) => void;
 };
 
 const renderTaskIndicator = (completed?: boolean) => {
@@ -20,7 +23,7 @@ const renderTaskIndicator = (completed?: boolean) => {
     );
   }
 
-  return <span className="h-5 w-6 rounded-full border border-[#B4B4C8]" />;
+  return <span className="h-5 w-5 rounded-full border border-[#B4B4C8]" />;
 };
 
 export const TaskList: FC<TaskListProps> = ({
@@ -28,7 +31,37 @@ export const TaskList: FC<TaskListProps> = ({
   onGenerateTask,
   onToggleTask,
   onRemoveTask,
+  onAddTask,
 }) => {
+  const [isAdding, setIsAdding] = useState(false);
+  const [newLabel, setNewLabel] = useState('');
+  const [newDue, setNewDue] = useState('Today');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isAdding) {
+      const timeout = setTimeout(() => inputRef.current?.focus(), 20);
+      return () => clearTimeout(timeout);
+    }
+    return undefined;
+  }, [isAdding]);
+
+  const resetForm = () => {
+    setNewLabel('');
+    setNewDue('Today');
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const label = newLabel.trim();
+    if (!label) {
+      return;
+    }
+    onAddTask?.({ label, dueLabel: newDue.trim() || 'Today' });
+    resetForm();
+    setIsAdding(false);
+  };
+
   return (
     <section className="flex h-full flex-col rounded-[32px] bg-white p-6 shadow-[0px_24px_60px_rgba(35,35,70,0.08)]">
       <header className="mb-6 flex items-start justify-between">
@@ -46,13 +79,73 @@ export const TaskList: FC<TaskListProps> = ({
         <button
           type="button"
           aria-label="Add task"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-[#292949] text-white"
+          onClick={() => {
+            if (isAdding) {
+              resetForm();
+              setIsAdding(false);
+            } else {
+              setIsAdding(true);
+            }
+          }}
+          className={`flex h-10 w-10 items-center justify-center rounded-full text-white transition-colors ${
+            isAdding ? 'bg-[#FF6B6B]' : 'bg-[#292949] hover:bg-[#3F3F63]'
+          }`}
         >
-          <span className="text-xl leading-none">+</span>
+          <span className="text-xl leading-none cursor-pointer">{isAdding ? '×' : '+'}</span>
         </button>
       </header>
       <motion.div layout className="space-y-3">
         <AnimatePresence initial={false} mode="popLayout">
+          {isAdding && (
+            <motion.form
+              key="task-form"
+              layout
+              onSubmit={handleSubmit}
+              initial={{ opacity: 0, scale: 0.95, y: -10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -10, height: 0, marginTop: 0, marginBottom: 0, paddingTop: 0, paddingBottom: 0, borderWidth: 0 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+              style={{ overflow: 'hidden' }}
+              className="flex w-full flex-col gap-3 rounded-[20px] border border-[#E3E3F5] bg-[#F7F7FC] px-4 py-4 text-[#2F2F41]"
+            >
+              <div className="flex items-center gap-3">
+                <span className="h-5 w-5 rounded-full border border-dashed border-[#B4B4C8]" aria-hidden />
+                <input
+                  ref={inputRef}
+                  value={newLabel}
+                  onChange={(event) => setNewLabel(event.target.value)}
+                  placeholder="Task name"
+                  className="flex-1 rounded-[12px] border border-transparent bg-white px-3 py-2 text-[15px] text-[#2F2F41] outline-none focus:border-[#B9B9FF] focus:ring-2 focus:ring-[#B9B9FF]/40"
+                />
+              </div>
+              <div className="flex items-center gap-3 pl-8">
+                <input
+                  value={newDue}
+                  onChange={(event) => setNewDue(event.target.value)}
+                  placeholder="Due (e.g. Today)"
+                  className="flex-1 rounded-[12px] border border-transparent bg-white px-3 py-2 text-[13px] text-[#5B5B70] outline-none focus:border-[#B9B9FF] focus:ring-2 focus:ring-[#B9B9FF]/40"
+                />
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      resetForm();
+                      setIsAdding(false);
+                    }}
+                    className="rounded-[12px] border border-transparent px-3 py-2 text-[13px] font-medium text-[#6F6F80] hover:border-[#D5D5EF] hover:bg-white"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="rounded-[12px] bg-[#4A4AEE] px-4 py-2 text-[13px] font-semibold text-white hover:bg-[#3D3DD6] focus:outline-none focus:ring-2 focus:ring-[#B9B9FF] focus:ring-offset-1"
+                  >
+                    Add Task
+                  </button>
+                </div>
+              </div>
+            </motion.form>
+          )}
           {tasks.map((task) => (
             <motion.article
               key={task.id}
@@ -76,7 +169,7 @@ export const TaskList: FC<TaskListProps> = ({
               }`}
             >
               {renderTaskIndicator(task.completed)}
-              <div className="pr-10 w-60">
+              <div className="pr-10 flex-1">
                 <p
                   className={`text-[15px] font-medium text-[#2F2F41] ${
                     task.completed ? 'line-through' : ''

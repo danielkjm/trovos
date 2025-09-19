@@ -12,7 +12,7 @@ type DashboardViewProps = {
 };
 
 export const DashboardView: FC<DashboardViewProps> = ({ onOpenMedicationDetail }) => {
-  const { tasks, generateAiTask, toggleTask, removeTask } = useTaskManager();
+  const { tasks, generateAiTask, toggleTask, removeTask, createTask } = useTaskManager();
 
   return (
     <section className="flex flex-1 flex-col gap-8">
@@ -23,6 +23,7 @@ export const DashboardView: FC<DashboardViewProps> = ({ onOpenMedicationDetail }
           onGenerateTask={generateAiTask}
           onToggleTask={toggleTask}
           onRemoveTask={removeTask}
+          onAddTask={createTask}
         />
         <div className="grid grid-cols-2 grid-rows-[minmax(0,260px)_minmax(0,1fr)] gap-6">
           <MedicationCard onOpenDetail={onOpenMedicationDetail} />
