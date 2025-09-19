@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
-import { Task, initialTasks } from '@/data/patient';
+import { Task, aiTaskSuggestions, initialTasks } from '@/data/patient';
 
 export const useTaskManager = () => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
@@ -22,15 +22,47 @@ export const useTaskManager = () => {
     );
   }, []);
 
-  const generateAiTasks = useCallback(async () => {
-    // Placeholder for AI-generated tasks; ready for integration with server/LLM
-    setTasks(initialTasks);
+  const removeTask = useCallback((taskId: string) => {
+    setTasks((prev) => prev.filter((task) => task.id !== taskId));
+  }, []);
+
+  const generateAiTask = useCallback(async () => {
+    setTasks((prev) => {
+      const existingLabels = new Set(prev.map((task) => task.label));
+      const suggestion = aiTaskSuggestions.find(
+        (item) => !existingLabels.has(item.label),
+      );
+
+      const formatDate = (date: Date) =>
+        new Intl.DateTimeFormat('en-US', {
+          month: '2-digit',
+          day: '2-digit',
+          year: '2-digit',
+        }).format(date);
+
+      const fallback = {
+        label: 'Check in with care manager about recovery progress',
+        dueLabel: formatDate(new Date()),
+      };
+
+      const source = suggestion ?? fallback;
+
+      const newTask: Task = {
+        id: `task-${Date.now()}`,
+        label: source.label,
+        dueLabel: source.dueLabel,
+        completed: false,
+      };
+
+      return [...prev, newTask];
+    });
   }, []);
 
   return {
     tasks: sortedTasks,
     setTasks,
-    generateAiTasks,
+    generateAiTask,
     toggleTask,
+    removeTask,
   };
 };

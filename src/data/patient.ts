@@ -5,6 +5,11 @@ export type Task = {
   completed?: boolean;
 };
 
+export type TaskSuggestion = {
+  label: string;
+  dueLabel: string;
+};
+
 export type Medication = {
   id: string;
   name: string;
@@ -52,6 +57,25 @@ export const initialTasks: Task[] = [
   {
     id: 'task-5',
     label: 'Review progress and concerns with family/support',
+    dueLabel: '09/24/25',
+  },
+];
+
+export const aiTaskSuggestions: TaskSuggestion[] = [
+  {
+    label: 'Log resting heart rate and share with care manager',
+    dueLabel: 'Today',
+  },
+  {
+    label: 'Change surgical dressing and inspect incision site',
+    dueLabel: '09/22/25',
+  },
+  {
+    label: 'Schedule cardiac rehab introduction session',
+    dueLabel: '09/23/25',
+  },
+  {
+    label: 'Prepare questions for cardiologist follow-up',
     dueLabel: '09/24/25',
   },
 ];
