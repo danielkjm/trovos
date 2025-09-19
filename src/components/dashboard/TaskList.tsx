@@ -25,8 +25,17 @@ export const TaskList: FC<TaskListProps> = ({ tasks = initialTasks, onGenerate, 
   return (
     <section className="flex h-full flex-col rounded-[32px] bg-white p-6 shadow-[0px_24px_60px_rgba(35,35,70,0.08)]">
       <header className="mb-6 flex items-center justify-between">
-        <div>
-          <h2 className="text-[20px] font-semibold text-[#2F2F41]">Tasks</h2>
+        <div className="flex flex-col w-full">
+          <div className="flex items-center justify-between w-full">
+            <h2 className="text-[20px] font-semibold text-[#2F2F41]">Tasks</h2>
+            <button
+              type="button"
+              aria-label="Add task"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#292949] text-white cursor-"
+            >
+              <span className="text-xl leading-none">+</span>
+            </button>
+          </div>
           <button
             type="button"
             onClick={onGenerate}
@@ -36,13 +45,6 @@ export const TaskList: FC<TaskListProps> = ({ tasks = initialTasks, onGenerate, 
             AI generate tasks
           </button>
         </div>
-        <button
-          type="button"
-          aria-label="Add task"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-[#292949] text-white"
-        >
-          <span className="text-xl leading-none">+</span>
-        </button>
       </header>
       <div className="space-y-3">
         {tasks.map((task) => (
@@ -62,7 +64,7 @@ export const TaskList: FC<TaskListProps> = ({ tasks = initialTasks, onGenerate, 
             }`}
           >
             {renderTaskIndicator(task.completed)}
-            <div>
+            <div className="w-50">
               <p
                 className={`text-[15px] font-medium text-[#2F2F41] ${
                   task.completed ? 'line-through' : ''

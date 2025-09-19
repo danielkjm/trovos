@@ -52,8 +52,8 @@ export const CalendarCard: FC<{ schedule?: Appointment[] }> = ({ schedule = appo
       <div className="grid grid-cols-[1fr_220px] gap-6">
         <div className="rounded-[24px] bg-[#F7F7FC] p-5">
           <div className="mb-4 grid grid-cols-7 text-center text-[13px] font-medium text-[#8B8BA0]">
-            {days[0].map((day) => (
-              <span key={day}>{day}</span>
+            {days[0].map((day, index) => (
+              <span key={`${day + index.toString()}`}></span>
             ))}
           </div>
           <div className="grid grid-cols-7 gap-3 text-center text-[15px] font-medium text-[#2F2F41]">
@@ -62,7 +62,7 @@ export const CalendarCard: FC<{ schedule?: Appointment[] }> = ({ schedule = appo
               const isActive = day === 18;
               return (
                 <span
-                  key={day}
+                  key={`${Number(day) + index}`}
                   className={`flex h-10 w-10 items-center justify-center rounded-full ${
                     isActive ? 'bg-[#5B4BFF] text-white shadow-[0px_16px_32px_rgba(79,66,195,0.35)]' : ''
                   }`}
