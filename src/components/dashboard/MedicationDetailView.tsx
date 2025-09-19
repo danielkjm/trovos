@@ -138,7 +138,7 @@ export const MedicationDetailView: FC<MedicationDetailViewProps> = ({
           </div>
         </div>
       </div>
-      <ChatInput maxWidthClass="max-w-[900px]" />
+      <ChatInput maxWidthClass="max-w-[900px]" variant="glass" />
     </section>
   );
 };

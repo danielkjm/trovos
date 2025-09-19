@@ -33,7 +33,7 @@ export const DashboardView: FC<DashboardViewProps> = ({ onOpenMedicationDetail }
         </div>
       </div>
       <div className="fixed bottom-12 left-0 right-0 z-50 w-full">
-        <ChatInput maxWidthClass="max-w-[900px]" />
+        <ChatInput maxWidthClass="max-w-[900px]" variant="glass" />
       </div>
     </section>
   );
