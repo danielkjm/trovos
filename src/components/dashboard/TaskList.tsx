@@ -4,6 +4,7 @@ import { initialTasks, Task } from '@/data/patient';
 type TaskListProps = {
   tasks?: Task[];
   onGenerate?: () => void;
+  onToggleTask?: (id: string) => void;
 };
 
 const renderTaskIndicator = (completed?: boolean) => {
@@ -20,7 +21,7 @@ const renderTaskIndicator = (completed?: boolean) => {
   return <span className="h-5 w-5 rounded-full border border-[#B4B4C8]" />;
 };
 
-export const TaskList: FC<TaskListProps> = ({ tasks = initialTasks, onGenerate }) => {
+export const TaskList: FC<TaskListProps> = ({ tasks = initialTasks, onGenerate, onToggleTask }) => {
   return (
     <section className="flex h-full flex-col rounded-[32px] bg-white p-6 shadow-[0px_24px_60px_rgba(35,35,70,0.08)]">
       <header className="mb-6 flex items-center justify-between">
@@ -43,15 +44,32 @@ export const TaskList: FC<TaskListProps> = ({ tasks = initialTasks, onGenerate }
           <span className="text-xl leading-none">+</span>
         </button>
       </header>
-      <div className="space-y-4">
-        {tasks.map((task, index) => (
+      <div className="space-y-3">
+        {tasks.map((task) => (
           <article
             key={task.id}
-            className={`flex items-start gap-4 border-b border-[#ECECF5] pb-4 ${index === tasks.length - 1 ? 'border-none pb-0' : ''}`}
+            role="button"
+            tabIndex={0}
+            onClick={() => onToggleTask?.(task.id)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                onToggleTask?.(task.id);
+              }
+            }}
+            className={`flex cursor-pointer items-start gap-4 rounded-[18px] border border-transparent px-4 py-3 transition-colors hover:border-[#E3E3F5] hover:bg-[#F7F7FC] ${
+              task.completed ? 'opacity-60' : ''
+            }`}
           >
             {renderTaskIndicator(task.completed)}
             <div>
-              <p className="text-[15px] font-medium text-[#2F2F41]">{task.label}</p>
+              <p
+                className={`text-[15px] font-medium text-[#2F2F41] ${
+                  task.completed ? 'line-through' : ''
+                }`}
+              >
+                {task.label}
+              </p>
               <p className="text-[13px] text-[#8B8BA0]">{task.dueLabel}</p>
             </div>
           </article>

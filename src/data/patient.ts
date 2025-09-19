@@ -33,7 +33,6 @@ export const initialTasks: Task[] = [
     id: 'task-1',
     label: 'Call Insurance company',
     dueLabel: 'Today',
-    completed: true,
   },
   {
     id: 'task-2',
