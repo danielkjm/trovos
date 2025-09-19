@@ -21,7 +21,7 @@ export default function Home() {
     if (dashboardMode === 'medication-detail') {
       return 'flex flex-1 gap-8 rounded-[40px] bg-white/95 p-8 shadow-[0px_32px_80px_rgba(31,31,56,0.08)]';
     }
-    return 'flex flex-1 gap-8 rounded-[40px] bg-[#F9F9FF] p-8 shadow-[0px_32px_80px_rgba(31,31,56,0.12)]';
+    return 'flex flex-1 gap-8';
   })();
 
   return (
