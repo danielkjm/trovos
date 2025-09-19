@@ -7,7 +7,11 @@ import { ChatInput } from '@/components/chat/ChatInput';
 import { CareTeamCard } from './CareTeamCard';
 import { useTaskManager } from '@/hooks/useTaskManager';
 
-export const DashboardView: FC = () => {
+type DashboardViewProps = {
+  onOpenMedicationDetail?: (id: string) => void;
+};
+
+export const DashboardView: FC<DashboardViewProps> = ({ onOpenMedicationDetail }) => {
   const { tasks, generateAiTasks } = useTaskManager();
 
   return (
@@ -16,7 +20,7 @@ export const DashboardView: FC = () => {
       <div className="grid grid-cols-[320px_minmax(0,1fr)] gap-8">
         <TaskList tasks={tasks} onGenerate={generateAiTasks} />
         <div className="grid grid-cols-2 grid-rows-[minmax(0,260px)_minmax(0,1fr)] gap-6">
-          <MedicationCard />
+          <MedicationCard onOpenDetail={onOpenMedicationDetail} />
           <FilesCard />
           <div className="col-span-2">
             <CalendarCard />

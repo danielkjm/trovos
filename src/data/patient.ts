@@ -10,6 +10,9 @@ export type Medication = {
   name: string;
   schedule: string;
   icon: 'sun' | 'moon';
+  description: string;
+  instructions: string[];
+  pillCount: number;
 };
 
 export type FileSummary = {
@@ -55,9 +58,52 @@ export const initialTasks: Task[] = [
 ];
 
 export const medications: Medication[] = [
-  { id: 'med-1', name: 'Metoprolol', schedule: '1 Morning', icon: 'sun' },
-  { id: 'med-2', name: 'Atenolol', schedule: '1 Night', icon: 'moon' },
-  { id: 'med-3', name: 'Ibuprofen', schedule: '1 Morning', icon: 'sun' },
+  {
+    id: 'med-1',
+    name: 'Metoprolol',
+    schedule: '1 Morning',
+    icon: 'sun',
+    pillCount: 32,
+    description:
+      'This medicine helps your heart by slowing it down and lowering your blood pressure. It makes it easier for your heart to pump and can prevent chest pain or future heart problems.',
+    instructions: [
+      'Take exactly as prescribed, usually once or twice a day.',
+      'Take with or right after food to help your body absorb it better.',
+      "Swallow tablets whole (don’t crush or chew unless told otherwise).",
+      'Try to take it at the same time every day to keep steady levels.',
+      'Do not stop suddenly; stopping without your doctor’s guidance may cause serious issues.',
+    ],
+  },
+  {
+    id: 'med-2',
+    name: 'Atenolol',
+    schedule: '1 Night',
+    icon: 'moon',
+    pillCount: 12,
+    description:
+      'Atenolol lowers your heart rate before bedtime to protect your heart while you rest. It eases strain on the heart muscle and supports recovery sleep.',
+    instructions: [
+      'Take at night with a light snack unless your doctor advises otherwise.',
+      'Continue monitoring blood pressure daily and log readings.',
+      'If a dose is missed, take it as soon as remembered unless it is near your next dose.',
+      'Do not double up on doses.',
+    ],
+  },
+  {
+    id: 'med-3',
+    name: 'Ibuprofen',
+    schedule: '1 Morning',
+    icon: 'sun',
+    pillCount: 18,
+    description:
+      'Ibuprofen reduces pain and inflammation so you can move comfortably during recovery. Take it with food to protect your stomach.',
+    instructions: [
+      'Take with breakfast and a full glass of water.',
+      'Do not exceed the prescribed daily amount.',
+      'Avoid taking with other NSAIDs or blood thinners unless cleared by your doctor.',
+      'Report any stomach pain or dark stools to your care team immediately.',
+    ],
+  },
 ];
 
 export const fileSummaries: FileSummary[] = [
